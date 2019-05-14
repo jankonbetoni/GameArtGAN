@@ -14,23 +14,39 @@ def extractFrames(inGif, outFolder):
             break;
     return True
     
-items=os.listdir("./pixels.deviantart.com")
+
+inputdir='./pixels.deviantart.com/'
+outputdir='./parentframes/'
+items=os.listdir(inputdir)
 giflist=[]
-renamelist=[]
+pnglist=[] #not used right now
+
 for filename in items:
     #print(filename)
     try:
-        img = Image.open('./pixels.deviantart.com/' + filename)
-        print('Format: ', img.format)  # 'JPEG'
-        #if (os.path.basename(inGif)):
-        #    os.path.basename(inGif)
+        img = Image.open(inputdir + filename)
+        print('Format: ', img.format)
+        
         if img.format=="GIF":
-            giflist.append('./pixels.deviantart.com/' + filename)
+            giflist.append(inputdir + filename)
+            
+        if img.format=="PNG":
+          pnglist.append(inputdir + filename) 
+          if not filename.split('.')[-1] == 'png':
+            img.save( outputdir + filename[0:-1] + '.png')
+          else:
+            img.save( outputdir + filename )
+        if img.format=="JPEG":
+          if not filename.split('.')[-1] == 'jpeg':
+            img.save( outputdir + filename.split('.')[0:-1] + '.png')
+          else:
+            img.save( outputdir + filename + '.png')
+          
+            
+            
     except:
         pass
     
 for name in giflist:
     print(name)
-    extractFrames(name, './frames')
-
-print(len(giflist))
+    extractFrames(name, outputdir)
