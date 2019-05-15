@@ -13,8 +13,10 @@ import shutil
 #	image = PIL.Image.open(item).convert('RGBA')
 #  image.save()
 
-shutil.rmtree('dcfixed')
-os.mkdir('dcfixed')
+#shutil.rmtree('MoreData')
+#os.mkdir('MoreData')
+inputdir='./frames'
+outputdir='./parentframes/DeviantArtRGB/'
 
 def remove_transparency(im, bg_colour=(255, 255, 255)):
 
@@ -34,12 +36,15 @@ def remove_transparency(im, bg_colour=(255, 255, 255)):
     else:
         return im
 
-for root, dirs, files in os.walk("./dc"):
+for root, dirs, files in os.walk(inputdir):
 	for name in dirs:
-		os.mkdir(os.path.join(root.replace('dc', 'dcfixed'), name))
+		  os.mkdir(os.path.join(root.replace(inputdir.split('/')[-1], \
+		                        outputdir.split('/')[-1]), name))
 	for name in files:
 		if not name.split('.')[-1] == 'png':
-			copyfile(os.path.join(root, name), os.path.join(root.replace('dc', 'dcfixed'), name))
+			#copyfile(os.path.join(root, name), os.path.join(root.replace(inputdir.split('/')[-1],\
+			#                                                outputdir.split('/')[-1] + 'RGB'), name))
+			print("There's a not PNF file in the input folder")
 		else:
 			image = Image.open(os.path.join(root, name))
 			#png.load() # required for png.split()
@@ -49,6 +54,6 @@ for root, dirs, files in os.walk("./dc"):
 
 			#background.save('foo.jpg', 'JPEG', quality=80)
 			image = remove_transparency(image)
-			image.save(os.path.join(root.replace('dc', 'dcfixed'), name), 'PNG')
+			image.save(outputdir+ name,'PNG')
 
 
